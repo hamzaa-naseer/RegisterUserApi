@@ -1,11 +1,11 @@
 const User = require("../models/user");
 const { validationResult } = require("express-validator");
 const user = require("../models/user");
-var jwt = require("jsonwebtoken");
-var expressJwt = require("express-jwt");
+cont jwt = require("jsonwebtoken");
+const expressJwt = require("express-jwt");
 const mongoose = require("mongoose");
 
-exports.signup = (req, res) => {
+const signup = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
+const signin = (req, res) => {
   const { email, password } = req.body;
 
   User.findOne({ email }, (err, user) => {
@@ -49,10 +49,10 @@ exports.signin = (req, res) => {
     // Create token
     const token = jwt.sign({ _id: user._id }, process.env.SECRET);
 
-    // Put token in cookie
+   
     res.cookie("token", token, { expire: new Date() + 1 });
 
-    // Send response
+   
     const { _id, name, email } = user;
     return res.json({
       token,
@@ -65,7 +65,7 @@ exports.signin = (req, res) => {
   });
 };
 
-exports.signout = (req, res) => {
+const signout = (req, res) => {
   res.clearCookie("token");
   return res.json({
     message: "User siginout successful",
